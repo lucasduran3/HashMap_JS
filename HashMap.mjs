@@ -1,4 +1,4 @@
-class HashMap {
+export default class HashMap {
   constructor(capacity = 16, loadFactor = 0.75) {
     this.capacity = capacity;
     this.loadFactor = loadFactor;
@@ -78,8 +78,69 @@ class HashMap {
   }
 
   has(key) {
-    const index = this.getIndex(this.hash(key));
-    return this.buckets[index] !== null;
+    const index = this.getIndex(key);
+
+    if (!this.buckets[index]) return false;
+
+    this.buckets[index].forEach(([storedKey, storedValue]) => {
+      if (storedKey === key) return true;
+    });
+    return false;
+  }
+
+  remove(key) {
+    if (this.has(key)) {
+      const index = this.getIndex(key);
+      this.buckets[index] = null;
+    } else {
+      return false;
+    }
+  }
+
+  length() {
+    //improve time complexity
+    let c = 0;
+    for (let i = 0; i < this.buckets.length; i++) {
+      for (let j = 0; j < this.buckets[i].length; j++) {
+        if (this.buckets[i][j][1]) {
+          c += 1;
+        }
+      }
+    }
+    return c;
+  }
+
+  keys() {
+    let keys = [];
+    this.buckets.forEach((bucket) => {
+      if (bucket) {
+        keys.push(bucket[0][0]);
+      }
+    });
+    return keys;
+  }
+
+  values() {
+    let values = [];
+    this.buckets.forEach((bucket) => {
+      if (bucket) {
+        values.push(bucket[0][1]);
+      }
+    });
+    return values;
+  }
+
+  entries() {
+    let entries = [];
+    this.buckets.forEach((bucket) => {
+      entries.push([bucket[0][0], bucket[0][1]]);
+    });
+
+    return entries;
+  }
+
+  clear() {
+    this.buckets.fill(null);
   }
 
   checkLoadFactor() {
