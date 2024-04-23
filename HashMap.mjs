@@ -82,10 +82,7 @@ export default class HashMap {
 
     if (!this.buckets[index]) return false;
 
-    this.buckets[index].forEach(([storedKey, storedValue]) => {
-      if (storedKey === key) return true;
-    });
-    return false;
+    return this.buckets[index][0][0] === key;
   }
 
   remove(key) {
@@ -98,16 +95,7 @@ export default class HashMap {
   }
 
   length() {
-    //improve time complexity
-    let c = 0;
-    for (let i = 0; i < this.buckets.length; i++) {
-      for (let j = 0; j < this.buckets[i].length; j++) {
-        if (this.buckets[i][j][1]) {
-          c += 1;
-        }
-      }
-    }
-    return c;
+    return this.keys().length;
   }
 
   keys() {
@@ -133,7 +121,9 @@ export default class HashMap {
   entries() {
     let entries = [];
     this.buckets.forEach((bucket) => {
-      entries.push([bucket[0][0], bucket[0][1]]);
+      if (bucket) {
+        entries.push([bucket[0][0], bucket[0][1]]);
+      }
     });
 
     return entries;
