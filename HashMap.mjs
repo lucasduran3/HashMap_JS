@@ -1,3 +1,5 @@
+import { LinkedList } from "./LinkedList.mjs";
+
 export default class HashMap {
   constructor(capacity = 16, loadFactor = 0.75) {
     this.capacity = capacity;
@@ -24,19 +26,27 @@ export default class HashMap {
     const index = this.getIndex(key);
 
     if (!this.buckets[index]) {
-      this.buckets[index] = [];
+      this.buckets[index] = LinkedList();
     }
 
     //Check if key already exists in the bucket
-    for (let i = 0; i < this.buckets[index].length; i++) {
+    /*for (let i = 0; i < this.buckets[index].length; i++) {
       const storedKey = this.buckets[index][i][1];
       if (storedKey === key) {
         this.buckets[index][i][1] = value;
         return;
       }
+    }*/
+
+    if(this.buckets[index].containsKey(key)){
+      const keyIndex = this.buckets[index].findKey(key);
+
+      this.buckets[index].removeAt(keyIndex);
+      this.buckets[index].insertAt(keyIndex, value);
     }
 
-    this.buckets[index].push([key, value]);
+    //this.buckets[index].push([key, value]);
+    this.buckets[index].append(key, value);
 
     //Check load factor and resize if necessary
     if (this.checkLoadFactor()) {
@@ -66,7 +76,8 @@ export default class HashMap {
 
   get(key) {
     const index = this.getIndex(key);
-    const findValue = this.buckets[index].find(
+    const bucket = this.buckets[index];
+    /*const findValue = this.buckets[index].find(
       ([storedKey, storedValue]) => storedKey === key
     );
 
@@ -74,7 +85,10 @@ export default class HashMap {
       return findValue;
     } else {
       return null;
-    }
+    }*/
+
+    const nodeIndex = bucket.findKey(key);
+    return bucket.at(nodeIndex);
   }
 
   has(key) {

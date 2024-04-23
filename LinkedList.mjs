@@ -3,21 +3,21 @@ import Node from "./Node.mjs";
 const LinkedList = () => {
   let HEAD = null;
 
-  const prepend = (value) => {
+  const prepend = (key, value) => {
     let temp = null;
     if (HEAD !== null) temp = HEAD;
-    HEAD = new Node(value);
+    HEAD = new Node(key, value);
     HEAD.nextNode = temp;
   };
 
-  const append = (value) => {
-    if (HEAD === null) prepend(value);
+  const append = (key, value) => {
+    if (HEAD === null) prepend(key, value);
     else {
       let temp = HEAD;
       while (temp.nextNode !== null) {
         temp = temp.nextNode;
       }
-      temp.nextNode = new Node(value);
+      temp.nextNode = new Node(key, value);
     }
   };
 
@@ -70,7 +70,7 @@ const LinkedList = () => {
     temp.nextNode = null;
   };
 
-  const contains = (value) => {
+  const containsValue = (value) => {
     let temp = HEAD;
 
     while (temp !== null) {
@@ -81,12 +81,36 @@ const LinkedList = () => {
     return false;
   };
 
-  const find = (value) => {
+  const containsKey = (key) => {
+    let temp = HEAD;
+
+    while (temp !== null) {
+      if (temp.key === key) return true;
+      temp = temp.nextNode;
+    }
+
+    return false;
+  };
+
+  const findValue = (value) => {
     let temp = HEAD;
     let c = 0;
 
     while (temp !== null) {
       if (temp.value === value) return c;
+      temp = temp.nextNode;
+      c++;
+    }
+
+    return null;
+  };
+
+  const findKey = (key) => {
+    let temp = HEAD;
+    let c = 0;
+
+    while (temp !== null) {
+      if (temp.key === key) return c;
       temp = temp.nextNode;
       c++;
     }
@@ -153,8 +177,10 @@ const LinkedList = () => {
     tail,
     at,
     pop,
-    contains,
-    find,
+    containsValue,
+    containsKey,
+    findValue,
+    findKey,
     insertAt,
     removeAt,
     toString,
