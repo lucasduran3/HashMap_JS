@@ -122,11 +122,11 @@ const LinkedList = () => {
     let temp = HEAD;
     let c = 1;
 
-    if(index < size || index > size){
+    if (index < size || index > size) {
       return console.error("Index outside of bounds");
     }
 
-    while(c < index){
+    while (c < index) {
       temp = temp.nextNode;
       c++;
     }
@@ -137,23 +137,58 @@ const LinkedList = () => {
     temp = new Node(value);
     temp.nextNode = after;
     before.nextNode = temp;
-  }
+  };
 
   const removeAt = (index) => {
     let temp = HEAD;
     let c = 0;
 
-    if(index < size || index > size){
+    if (index < size || index > size) {
       return console.error("Index outside of bounds");
     }
 
-    while(c < index){
+    while (c < index) {
       temp = temp.nextNode;
       c++;
     }
 
-    temp.nextNode = null;    
-  }
+    temp.nextNode = null;
+  };
+
+  const keys = () => {
+    const keys = [];
+    let temp = HEAD;
+
+    while (temp !== null) {
+      keys.push(temp.key);
+      temp = temp.nextNode;
+    }
+
+    return keys;
+  };
+
+  const values = () => {
+    const values = [];
+    let temp = HEAD;
+
+    while (temp !== null) {
+      values.push(temp.value);
+      temp = temp.nextNode;
+    }
+
+    return values;
+  };
+
+  const pairKeyValues = () => {
+    const pairs = [];
+    let temp = HEAD;
+
+    while (temp !== null) {
+      pairs.push(temp.key, temp.value);
+      temp = temp.nextNode;
+    }
+    return pairs;
+  };
 
   const toString = () => {
     let result = "";
@@ -182,9 +217,12 @@ const LinkedList = () => {
     findValue,
     findKey,
     insertAt,
+    keys,
+    values,
+    pairKeyValues,
     removeAt,
     toString,
   };
 };
 
-export {LinkedList};
+export { LinkedList };
